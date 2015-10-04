@@ -38,6 +38,11 @@ function mapStateToProps(state) {
   };
 }
 
+/**
+ Connect should be applied to top level components or Routes.
+ Essentially each Route is a top level component so they should be connected.
+ Although this does get a bit sketchy with the comments component
+ */
 export const PostsContainer = connect(
   mapStateToProps,
   actionCreators

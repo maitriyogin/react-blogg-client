@@ -7,20 +7,10 @@ export function setState(state) {
   };
 }
 
-export function selectPost(state, postId) {
+export function selectPost(postId) {
   return {
     meta: {remote: false},
     type: 'SELECT_POST',
-    state : state,
-    postId : postId
-  };
-}
-
-export function selectComments(state, postId) {
-  return {
-    meta: {remote: false},
-    type: 'SELECT_COMMENTS',
-    state : state,
     postId : postId
   };
 }

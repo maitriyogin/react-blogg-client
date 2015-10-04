@@ -6,28 +6,22 @@ import {utils} from '../utils';
 export const Post = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
-  post : {},
-
-  getPost(props){
-
-  },
-
   componentWillMount: function() {
-    let {selectPost, state} = this.props;
+    let {selectPost} = this.props;
     let{postId} = this.props.params;
     console.log('--- componentWillMount postId : ' + postId);
-    selectPost(state, postId);
+    selectPost(postId);
   },
 
   componentWillReceiveProps: function(nextProps) {
-    let {selectPost, state} = nextProps;
+    let {selectPost} = nextProps;
     let postId = nextProps.params.postId;
     let currentPostId = this.props.params.postId;
-    let post = this.props.currentPost;
+    let post = this.props.post;
     console.log('------ currentPostId :' + currentPostId + ', new postId ' + postId);
     if(currentPostId !== postId || post == null) {
       console.log('--- componentWillReceiveProps postid' + postId);
-      selectPost(state, postId);
+      selectPost(postId);
     }
   },
 
@@ -35,9 +29,7 @@ export const Post = React.createClass({
   render: function() {
     console.log('+++++++++');
     // get the post
-    let {currentPost, state} = this.props;
-    //let currentPostId = this.props.params.postId;
-    let post = utils.getItem(state, 'posts', currentPost);
+    let post = this.props.post;
 
     console.log('post render : ' + this.props.post);
     let postMu = <li>No Post!</li>;
@@ -63,8 +55,7 @@ export const Post = React.createClass({
 function mapStateToProps(state) {
   //console.log('---- Post : ' + JSON.stringify(state.get('currentPost'), null, 2));
   return {
-    state: state,
-    currentPost: state.get('currentPost')
+    post : utils.getItem(state, 'posts', state.get('currentPost'))
   };
 }
 
