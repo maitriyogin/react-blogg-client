@@ -22,6 +22,7 @@
     "webpack-dev-server": "^1.12.0"
   },
   "dependencies": {
+    "history": "^1.11.1",
     "immutable": "^3.7.5",
     "react": "^0.13.3",
     "react-redux": "^3.0.1",

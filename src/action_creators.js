@@ -22,3 +22,27 @@ export function addComment(comment, postId, userId = 1) {
     comment : Map({body: comment, date: new Date(), post: postId, user: userId})
   };
 }
+
+export function toggleEdit() {
+  return {
+    meta: {remote: false},
+    type: 'TOGGLE_EDIT'
+  };
+}
+
+export function setPostEdit(edit = true) {
+  return {
+    meta: {remote: false},
+    type: 'SET_EDIT',
+    edit : edit
+  };
+}
+
+export function updatePost(postId, postText){
+  return {
+    meta: {remote: true},
+    type: 'UPDATE_POST_TEXT',
+    postId : postId,
+    postText : postText
+  };
+}

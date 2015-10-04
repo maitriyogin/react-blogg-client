@@ -21,6 +21,12 @@ export default function(state = Map(), action = {type:null}) {
     case 'SELECT_POST':
       state = selectPost(state, action.postId);
       return state;
+    case 'TOGGLE_EDIT':
+      state = state.set('postEdit', !state.get('postEdit'));
+      return state;
+    case 'SET_EDIT':
+      state = state.set('postEdit', action.edit);
+      return state;
   }
   return state;
 }
