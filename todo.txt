@@ -1,0 +1,17 @@
+users -
+add
+remove
+update
+
+post
+modes
+- edit
+- view
+- save
+
+styling
+
+navbar
+
+comments
+- remove text
