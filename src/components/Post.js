@@ -62,9 +62,16 @@ export const Post = React.createClass({
 
   // --- actions
   doToggleEdit(){
-    let {toggleEdit} = this.props;
+    let {toggleEdit, edit} = this.props;
+    if(edit){
+      console.log('********** 1. about to save post edits');
+    } else {
+      console.log('++++++++++ 1. about to toggle edit in the client');
+    }
     toggleEdit();
-    this.savePost();
+    if(edit) {
+      this.savePost();
+    }
   },
 
   savePost(){
@@ -77,11 +84,9 @@ export const Post = React.createClass({
 
   // --- render!
   render: function() {
-    console.log('+++++++++');
     // get the post
     let {post,edit}= this.props;
 
-    console.log('post render : ' + this.props.post);
     let postMu = <li>No Post!</li>;
     if(post != null) {
 
@@ -119,7 +124,7 @@ export const Post = React.createClass({
 });
 
 function mapStateToProps(state) {
-  //console.log('---- Post : ' + JSON.stringify(state.get('currentPost'), null, 2));
+  console.log('---------- Post : new state' + JSON.stringify(state.posts, null, 2));
   return {
     post : utils.getItem(state.posts, 'posts', state.posts.get('currentPost')),
     edit : state.posts.get('postEdit')

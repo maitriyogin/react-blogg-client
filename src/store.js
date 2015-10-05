@@ -25,8 +25,10 @@ const createStoreWithMiddleware = applyMiddleware(
 // export the store
 export const store = createStoreWithMiddleware(reducer);
 
-console.log('---- about to connect!');
 socket.on('state', state => {
+    console.log('---- 1. recieve state');
+
+    console.log('---- 2. dispatch setState Action');
     store.dispatch(setState(state))
   }
 )

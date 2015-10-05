@@ -33,7 +33,6 @@ export const utils = {
       list = list.filter((item) => {
         return item.get(fkName) == fkId;
       });
-      console.log('filteredList fkId:' + fkId +', '+ JSON.stringify(list, null, 2));
 
       return list;
     } else {

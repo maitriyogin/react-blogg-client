@@ -8,8 +8,6 @@ export const Posts = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
   render: function() {
-    console.log('+++++++++');
-    console.log('posts render : ' + this.props.posts);
     let posts = <li>No Posts!</li>
     if(this.props.posts != null) {
       posts = this.props.posts.map((post)=> {
@@ -32,7 +30,7 @@ export const Posts = React.createClass({
 });
 
 function mapStateToProps(state) {
-  console.log('---- Posts state : ' + JSON.stringify(state, null, 2));
+  console.log('---- 5. Posts state change ');
   return {
     posts: state.posts != null ? state.posts.get('posts') : null
   };

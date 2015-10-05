@@ -30,11 +30,11 @@ function updateUser(state, mutUser){
 }
 
 export default function(state = Map({users:null}), action = {type:null}) {
-  console.log('------- Reducer action ' + action.type);
+  console.log('***** Users Reducer action ' + action.type);
   switch (action.type) {
     case 'SET_STATE':
       state = state.merge({users: action.state.users});
-      //console.log('*** users set state' + JSON.stringify(state, null, 2));
+      console.log('---- 4. Users setState :' + JSON.stringify(state, null, 2));
     return state;
     case 'CLEAR_VIEW_USER':
       state = state.delete('newUser');

@@ -8,21 +8,25 @@ import {utils} from './utils';
 import {List, Map} from 'immutable';
 
 function selectPost(state,postId){
-  console.log('------- select post');
   return state.set('currentPost', postId);
 }
 
 export default function(state = Map({posts:null, comments:null}), action = {type:null}) {
-  console.log('------- Posts Reducer action ' + action.type);
+  console.log('***** Posts Reducer action ' + action.type);
+  if(action.type == 'TOGGLE_EDIT'){
+    console.log('++++++++++ 3. store takes toggle_edit and passes it to its reducers');
+  }
   switch (action.type) {
     case 'SET_STATE':
       state = state.merge({posts:action.state.posts, comments:action.state.comments});
+      console.log('---- 3. Posts setState :' + JSON.stringify(state, null, 2));
       //console.log('*** posts set state' + JSON.stringify(state, null, 2));
       return state;
     case 'SELECT_POST':
       state = selectPost(state, action.postId);
       return state;
     case 'TOGGLE_EDIT':
+      console.log('++++++++++ 4. reducer handles toggle_edit and mutates the state');
       state = state.set('postEdit', !state.get('postEdit'));
       return state;
     case 'SET_EDIT':
