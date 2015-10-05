@@ -7,6 +7,7 @@ import {PostsContainer} from './components/Posts';
 import {PostContainer} from './components/Post';
 import {CommentsContainer} from './components/Comments';
 import {UsersContainer} from './components/Users';
+import {UserContainer} from './components/User';
 
 export default (store) => {
   return (
@@ -20,7 +21,9 @@ export default (store) => {
                 <Route path="comments" component={CommentsContainer} />
               </Route>
             </Route>
-            <Route path="users" component={UsersContainer} />
+            <Route path="users" component={UsersContainer} >
+              <Route path="new" component={UserContainer} />
+            </Route>
           </Route>
 
         </Router>

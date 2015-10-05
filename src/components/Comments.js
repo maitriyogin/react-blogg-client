@@ -1,5 +1,6 @@
 import React from 'react/addons';
 import {connect} from 'react-redux';
+import moment from 'moment';
 import * as actionCreators from '../action_creators';
 import { Link } from 'react-router';
 import {utils} from '../utils';
@@ -23,7 +24,7 @@ export const Comments = React.createClass({
       commentsMu = comments.map((comment)=> {
         let id = comment.get('_id');
         let commentsLink = `comments/${id}`;
-        return <li key={comment.get('_id')}><span>{comment.get('date')}</span> <span>{comment.get('body')}</span> </li>
+        return <li key={comment.get('_id')}><span>{moment(comment.get('date')).fromNow()}</span> <span>{comment.get('body')}</span> </li>
       });
     }
     return (

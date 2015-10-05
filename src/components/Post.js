@@ -3,6 +3,8 @@ import {connect} from 'react-redux';
 import { History } from 'react-router'
 import * as actionCreators from '../action_creators';
 import {utils} from '../utils';
+import showdown from 'showdown';
+const converter = new showdown.Converter();
 
 export const Post = React.createClass({
   mixins: [React.addons.PureRenderMixin, History],
@@ -62,6 +64,7 @@ export const Post = React.createClass({
   doToggleEdit(){
     let {toggleEdit} = this.props;
     toggleEdit();
+    this.savePost();
   },
 
   savePost(){
@@ -91,9 +94,16 @@ export const Post = React.createClass({
               {edit ? (
                 <div>
                   <button type='button' onClick={this.doToggleEdit}>View</button>
-                  <button type='button' onClick={this.savePost}>Save</button>
-                <p><textarea ref='postTextArea' width='60' rows='6'>{postText}</textarea></p></div>):
-                (<div><button type='button' onClick={this.doToggleEdit}>Edit</button><p>{postText}</p></div>)}
+                  <p><textarea ref='postTextArea' width='100' rows='10' defaultValue={postText}/></p></div>):
+                (<div>
+                  <button type='button' onClick={this.doToggleEdit}>Edit</button>
+                  <div
+                    className="content"
+                    dangerouslySetInnerHTML={{
+                      __html: converter.makeHtml(postText)
+                    }}
+                    />
+                </div>)}
             </div>
         </div>
       ;

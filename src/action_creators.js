@@ -46,3 +46,33 @@ export function updatePost(postId, postText){
     postText : postText
   };
 }
+
+export function newUser(){
+  return {
+    meta: {remote: false},
+    type: 'NEW_USER'
+  };
+}
+
+export function updateViewUser(user){
+  return {
+    meta: {remote: false},
+    type: 'UPDATE_VIEW_USER',
+    user
+  };
+}
+
+export function clearViewUser(){
+  return {
+    meta: {remote: false},
+    type: 'CLEAR_VIEW_USER'
+  };
+}
+
+export function saveUser(user){
+  return {
+    meta: {remote: true},
+    type: 'UPDATE_USER',
+    user : user
+  };
+}
