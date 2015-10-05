@@ -121,8 +121,8 @@ export const Post = React.createClass({
 function mapStateToProps(state) {
   //console.log('---- Post : ' + JSON.stringify(state.get('currentPost'), null, 2));
   return {
-    post : utils.getItem(state, 'posts', state.get('currentPost')),
-    edit : state.get('postEdit')
+    post : utils.getItem(state.posts, 'posts', state.posts.get('currentPost')),
+    edit : state.posts.get('postEdit')
   };
 }
 

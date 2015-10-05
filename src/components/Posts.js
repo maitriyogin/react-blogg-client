@@ -32,9 +32,9 @@ export const Posts = React.createClass({
 });
 
 function mapStateToProps(state) {
-  //console.log('---- Posts : ' + JSON.stringify(state, null, 2));
+  console.log('---- Posts state : ' + JSON.stringify(state, null, 2));
   return {
-    posts: state.get('posts')
+    posts: state.posts != null ? state.posts.get('posts') : null
   };
 }
 

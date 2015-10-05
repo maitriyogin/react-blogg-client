@@ -43,8 +43,8 @@ export const Comments = React.createClass({
 function mapStateToProps(state) {
   //console.log('---- Comments : ' + JSON.stringify(state, null, 2));
   return {
-    state: state,
-    comments: utils.filterList(state, 'comments', 'post', state.get('currentPost'))
+    state: state.posts,
+    comments: utils.filterList(state.posts, 'comments', 'post', state.posts.get('currentPost'))
   };
 }
 

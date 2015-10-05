@@ -36,7 +36,7 @@ export const Users = React.createClass({
 
 function mapStateToProps(state) {
   return {
-    users: state.get('users')
+    users: state.users.get('users')
   };
 }
 
