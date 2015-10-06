@@ -32,6 +32,21 @@ export function addComment(comment, postId, userId = 1) {
   };
 }
 
+export function updateClientComment(comment) {
+  return {
+    meta: {remote: false},
+    type: 'UPDATE_CLIENT_COMMENT',
+    comment : comment
+  };
+}
+
+export function clearClientComment() {
+  return {
+    meta: {remote: false},
+    type: 'CLEAR_CLIENT_COMMENT'
+  };
+}
+
 export function toggleEdit() {
   return {
     meta: {remote: false},

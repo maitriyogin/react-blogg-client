@@ -10,23 +10,37 @@ import 'styles/components/Comments';
 export const Comments = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
-  getInitialState: function() {
-    return {comment: null};
-  },
+  //getInitialState: function() {
+  //  return {comment: null};
+  //},
 
-  addAComment(event){
+  enter : false,
+
+  addComment(event){
     if (event.which === 13) {
-      var comment = this.state.comment; //event.target.value;
-      let {addComment} = this.props;
-      addComment(comment, parseInt(this.props.params.postId));
-      this.setState({comment: ''});
-    } else {
-      this.setState({comment: event.target.value});
+      //var comment = this.state.comment; //event.target.value;
+      let {addComment, clearClientComment} = this.props;
+      addComment(event.target.value, parseInt(this.props.params.postId));
+      clearClientComment(event.target.value);
+      this.enter = true;
     }
   },
 
+  updateComment(event){
+    if (!this.enter) {
+      let {updateClientComment} = this.props;
+      //console.log('addAComment : ' + event.target.value);
+      updateClientComment(event.target.value);
+    }
+    this.enter = false;
+  },
+
   render: function() {
-    let {comments} = this.props;
+    let {comments, clientComment} = this.props;
+    if(clientComment == null){
+      clientComment = '';
+    }
+    console.log('clientComment : ' + clientComment);
     let commentsMu = <li>No Comments!</li>
     if(comments != null) {
       commentsMu = comments.map((comment)=> {
@@ -41,7 +55,7 @@ export const Comments = React.createClass({
         <ul>
           {commentsMu}
         </ul>
-        <textarea rows='3' cols='60' placeholder='make your comment' onKeyDown={this.addAComment} value={this.comment}/>
+        <textarea rows='3' cols='60' placeholder='make your comment' onKeyDown={this.addComment} onChange={this.updateComment} value={clientComment}/>
         {this.props.children}
       </div>
     );
@@ -52,7 +66,8 @@ function mapStateToProps(state) {
   //console.log('---- Comments : ' + JSON.stringify(state, null, 2));
   return {
     state: state.posts,
-    comments: utils.filterList(state.posts, 'comments', 'post', state.posts.get('currentPost'))
+    comments: utils.filterList(state.posts, 'comments', 'post', state.posts.get('currentPost')),
+    clientComment : state.posts.get('clientComment')
   };
 }
 

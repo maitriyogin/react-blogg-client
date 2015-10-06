@@ -11,9 +11,9 @@ import 'styles/components/Post';
 export const Post = React.createClass({
   mixins: [React.addons.PureRenderMixin, History],
 
-  getInitialState: function() {
-    return {postText: null};
-  },
+  //getInitialState: function() {
+  //  return {postText: null};
+  //},
 
   // --- lifecycle
   /**
@@ -90,7 +90,11 @@ export const Post = React.createClass({
   },
 
   postTextChange(event){
-      this.setState({postText: event.target.value});
+    let {updatePost} = this.props;
+    let postText = event.target.value;
+    let postId = parseInt(this.props.params.postId);
+    updatePost(postId, postText);
+    //this.setState({postText: event.target.value});
   },
 
   // --- render!
@@ -101,6 +105,8 @@ export const Post = React.createClass({
 
     if(post != null) {
 
+      let postText = post.get('body');
+      // let postText = this.state.postText
       //console.log('------ Post render postid :' + post.get('_id')  + ', text:' + this.state.postText);
 
       postMu =
@@ -110,13 +116,13 @@ export const Post = React.createClass({
               {edit ? (
                 <div>
                   <button type='button' onClick={this.doToggleEdit}>View</button>
-                  <p><textarea ref='postTextArea' rows='15' cols='60' value={this.state.postText} onChange={this.postTextChange}/></p></div>):
+                  <p><textarea ref='postTextArea' rows='15' cols='60' value={postText} onChange={this.postTextChange}/></p></div>):
                 (<div>
                   <button type='button' onClick={this.doToggleEdit}>Edit</button>
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
-                      __html: converter.makeHtml(this.state.postText)
+                      __html: converter.makeHtml(postText)
                     }}
                     />
                 </div>)}
@@ -135,7 +141,7 @@ export const Post = React.createClass({
 });
 
 function mapStateToProps(state) {
-  console.log('---------- Post : new state' + JSON.stringify(state.posts, null, 2));
+  //console.log('---------- Post : new state' + JSON.stringify(state.posts, null, 2));
   return {
     post : utils.getItem(state.posts, 'posts', state.posts.get('currentPost')),
     edit : state.posts.get('postEdit')

@@ -12,6 +12,10 @@ function selectPost(state,postId){
   return state.set('currentPost', postId);
 }
 
+function updateClientComment(state, comment){
+  return state.set('clientComment', comment);
+}
+
 export default function(state = Map({posts:null, comments:null}), action = {type:null}) {
   console.log('***** Posts Reducer action ' + action.type);
   if(action.type == 'TOGGLE_EDIT'){
@@ -32,6 +36,13 @@ export default function(state = Map({posts:null, comments:null}), action = {type
       return state;
     case 'SET_EDIT':
       state = state.set('postEdit', action.edit);
+      return state;
+    case 'UPDATE_CLIENT_COMMENT':
+      state = updateClientComment(state, action.comment);
+      return state;
+    case 'CLEAR_CLIENT_COMMENT':
+      state = state.delete('clientComment');
+      console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
       return state;
     default :
       return state;
