@@ -4,7 +4,8 @@
   "description": "React blogg client, for the react blogg server.  Primary purpose is to demonstrate redux both on the server and in the client",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --port 3000",
+    "start": "node server",
+    "dev" : "webpack-dev-server --port 3000",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js 'test/**/*.@(js|jsx)'",
     "test:watch": "npm run test -- --watch",
     "build": "NODE_ENV=production UV_THREADPOOL_SIZE=100 webpack -p --config webpack.production.config.js",
