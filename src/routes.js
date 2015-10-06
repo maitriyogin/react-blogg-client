@@ -25,7 +25,6 @@ export default (store) => {
               <Route path="new" component={UserContainer} />
             </Route>
           </Route>
-
         </Router>
       }
     </Provider>)

@@ -14,11 +14,6 @@ export const Navbar = React.createClass({
           <li><Link className='SECTION__Navbar__posts' to="/posts">Posts</Link></li>
           <li><Link className='SECTION__Navbar__users' to="/users">Users</Link></li>
         </ul>
-        {/*
-         next we replace `<Child>` with `this.props.children`
-         the router will figure out the children for us
-         */}
-        {this.props.children}
       </div>
     );
   }

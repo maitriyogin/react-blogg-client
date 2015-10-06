@@ -9,6 +9,12 @@ export default React.createClass({
     return (
       <div>
         <Navbar/>
+
+        {/*
+         next we replace `<Child>` with `this.props.children`
+         the router will figure out the children for us
+         */}
+
         {this.props.children}
       </div>
     )
