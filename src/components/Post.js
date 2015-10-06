@@ -6,8 +6,14 @@ import {utils} from '../utils';
 import showdown from 'showdown';
 const converter = new showdown.Converter();
 
+import 'styles/components/Post';
+
 export const Post = React.createClass({
   mixins: [React.addons.PureRenderMixin, History],
+
+  getInitialState: function() {
+    return {postText: null};
+  },
 
   // --- lifecycle
   /**
@@ -29,9 +35,10 @@ export const Post = React.createClass({
     let postId = nextProps.params.postId;
     let currentPostId = this.props.params.postId;
     let post = this.props.post;
-    console.log('------ currentPostId :' + currentPostId + ', new postId ' + postId);
+    console.log('------ Post currentPostId :' + currentPostId + ', new postId ' + postId);
+    this.setState({postText:nextProps.post.get('body')});
     if(currentPostId !== postId || post == null) {
-      console.log('--- componentWillReceiveProps postid' + postId);
+      console.log('--- Post componentWillReceiveProps postid' + postId);
       selectPost(postId);
     }
 
@@ -82,15 +89,19 @@ export const Post = React.createClass({
     updatePost(postId, text);
   },
 
+  postTextChange(event){
+      this.setState({postText: event.target.value});
+  },
+
   // --- render!
   render: function() {
     // get the post
     let {post,edit}= this.props;
-
     let postMu = <li>No Post!</li>;
+
     if(post != null) {
 
-      let postText = post.get('body');
+      //console.log('------ Post render postid :' + post.get('_id')  + ', text:' + this.state.postText);
 
       postMu =
         <div>
@@ -99,13 +110,13 @@ export const Post = React.createClass({
               {edit ? (
                 <div>
                   <button type='button' onClick={this.doToggleEdit}>View</button>
-                  <p><textarea ref='postTextArea' width='100' rows='10' defaultValue={postText}/></p></div>):
+                  <p><textarea ref='postTextArea' rows='15' cols='60' value={this.state.postText} onChange={this.postTextChange}/></p></div>):
                 (<div>
                   <button type='button' onClick={this.doToggleEdit}>Edit</button>
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
-                      __html: converter.makeHtml(postText)
+                      __html: converter.makeHtml(this.state.postText)
                     }}
                     />
                 </div>)}

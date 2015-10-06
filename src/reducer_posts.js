@@ -8,6 +8,7 @@ import {utils} from './utils';
 import {List, Map} from 'immutable';
 
 function selectPost(state,postId){
+  console.log('selectPost id:' + postId);
   return state.set('currentPost', postId);
 }
 

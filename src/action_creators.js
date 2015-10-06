@@ -2,7 +2,16 @@ import { Map} from 'immutable';
 
 export function setState(state) {
   return {
+    meta: {remote: false},
     type: 'SET_STATE',
+    state
+  };
+}
+
+export function resetState(state) {
+  return {
+    meta: {remote: true},
+    type: 'RESET_STATE',
     state
   };
 }

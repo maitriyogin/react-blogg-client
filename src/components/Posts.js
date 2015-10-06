@@ -4,8 +4,15 @@ import * as actionCreators from '../action_creators';
 import {PostContainer} from './Post';
 import { Link } from 'react-router';
 
+import 'styles/components/Posts';
+
 export const Posts = React.createClass({
   mixins: [React.addons.PureRenderMixin],
+
+  resetServerState(){
+    let {resetState} = this.props;
+    resetState();
+  },
 
   render: function() {
     let posts = <li>No Posts!</li>
@@ -17,13 +24,17 @@ export const Posts = React.createClass({
       });
     }
     return (
-      <div>
-        <h1>Posts</h1>
+      <div >
+        <div className='SECTION__Posts'>
+        <h1 onClick={this.resetServerState}>Posts</h1>
           <ul>
             {posts}
           </ul>
-        <hr/>
-        {this.props.children}
+        </div>
+        <div className='SECTION__Post'>
+          {this.props.children}
+        </div>
+
       </div>
     );
   }
