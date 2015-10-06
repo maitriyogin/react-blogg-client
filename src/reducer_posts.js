@@ -30,6 +30,13 @@ export default function(state = Map({posts:null, comments:null}), action = {type
     case 'SELECT_POST':
       state = selectPost(state, action.postId);
       return state;
+    case 'UPDATE_CLIENT_POST':
+      state = state.set('clientPost', action.post);
+      return state;
+    case 'CLEAR_CLIENT_POST':
+      state = state.delete('clientPost');
+      //console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
+      return state;
     case 'TOGGLE_EDIT':
       console.log('++++++++++ 4. reducer handles toggle_edit and mutates the state');
       state = state.set('postEdit', !state.get('postEdit'));
@@ -42,7 +49,7 @@ export default function(state = Map({posts:null, comments:null}), action = {type
       return state;
     case 'CLEAR_CLIENT_COMMENT':
       state = state.delete('clientComment');
-      console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
+      //console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
       return state;
     default :
       return state;
