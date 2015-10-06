@@ -14,8 +14,14 @@ import remoteActionMiddleware from './remote_action_middleware';
 import reducer from './reducer';
 import io from 'socket.io-client';
 
+const herokuUrl = 'https://mighty-stream-4777.herokuapp.com';
+const localUrl = `${location.protocol}//${location.hostname}:8090`;
+const url = location.hostname == 'localhost' ? localUrl : herokuUrl;
+
+console.log(`Websocket connection is using : ${url}`);
+
 // ---- websockets, start
-const socket = io(`${location.protocol}//${location.hostname}:8090`);
+const socket = io(url);
 
 // ---- apply middleware to store
 const createStoreWithMiddleware = applyMiddleware(
