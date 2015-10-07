@@ -9,11 +9,20 @@ import {List, Map} from 'immutable';
 
 function selectPost(state,postId){
   console.log('selectPost id:' + postId);
-  return state.set('currentPost', postId);
+  state = state.set('currentPost', postId);
+  return state;
 }
 
 function updateClientComment(state, comment){
   return state.set('clientComment', comment);
+}
+
+function updateClientPost(state, postText, postId){
+  let post = utils.getItem(state, 'posts', postId);
+  post = post.set('body');
+  let posts = utils.updateItem(state.get('posts'), post, postId);
+  state = state.set('posts', posts);
+  return state;
 }
 
 export default function(state = Map({posts:null, comments:null}), action = {type:null}) {
@@ -24,14 +33,14 @@ export default function(state = Map({posts:null, comments:null}), action = {type
   switch (action.type) {
     case 'SET_STATE':
       state = state.merge({posts:action.state.posts, comments:action.state.comments});
-      console.log('---- 3. Posts setState :' + JSON.stringify(state, null, 2));
+      //console.log('---- 3. Posts setState :' + JSON.stringify(state, null, 2));
       //console.log('*** posts set state' + JSON.stringify(state, null, 2));
       return state;
     case 'SELECT_POST':
       state = selectPost(state, action.postId);
       return state;
     case 'UPDATE_CLIENT_POST':
-      state = state.set('clientPost', action.post);
+      state = updateClientPost(state, action.postText, action.postId);
       return state;
     case 'CLEAR_CLIENT_POST':
       state = state.delete('clientPost');

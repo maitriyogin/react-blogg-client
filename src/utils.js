@@ -38,5 +38,9 @@ export const utils = {
     } else {
       return List.of();
     }
+  },
+  updateItem: (list, item, id) =>{
+    let i = utils.getIndex(list, id);
+    return list.set(i, item);
   }
 };

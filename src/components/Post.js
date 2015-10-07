@@ -90,7 +90,9 @@ export const Post = React.createClass({
   },
 
   postTextChange(event){
-      this.setState({postText: event.target.value});
+    let {updateClientPost} = this.props;
+    let postId = parseInt(this.props.params.postId);
+    updateClientPost(event.target.value, postId);
   },
 
   // --- render!
@@ -98,31 +100,28 @@ export const Post = React.createClass({
     // get the post
     let {post,edit}= this.props;
     let postMu = <li>No Post!</li>;
-
     if(post != null) {
-
+      let postText = post.get('body');
       //console.log('------ Post render postid :' + post.get('_id')  + ', text:' + this.state.postText);
-
       postMu =
-        <div>
+        (<div>
           <h2>{post.get('title')}</h2>
           <div>
               {edit ? (
                 <div>
                   <button type='button' onClick={this.doToggleEdit}>View</button>
-                  <p><textarea ref='postTextArea' rows='15' cols='60' value={this.state.postText} onChange={this.postTextChange}/></p></div>):
+                  <p><textarea ref='postTextArea' rows='15' cols='60' value={postText} onChange={this.postTextChange}/></p></div>):
                 (<div>
                   <button type='button' onClick={this.doToggleEdit}>Edit</button>
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
-                      __html: converter.makeHtml(this.state.postText)
+                      __html: converter.makeHtml(postText)
                     }}
                     />
                 </div>)}
             </div>
-        </div>
-      ;
+        </div>);
     }
     return (
       <div>
@@ -135,7 +134,7 @@ export const Post = React.createClass({
 });
 
 function mapStateToProps(state) {
-  console.log('---------- Post : new state' + JSON.stringify(state.posts, null, 2));
+  //console.log('---------- Post : new state' + JSON.stringify(state.posts, null, 2));
   return {
     post : utils.getItem(state.posts, 'posts', state.posts.get('currentPost')),
     edit : state.posts.get('postEdit')

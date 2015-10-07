@@ -35,11 +35,12 @@ export function selectPost(postId) {
   };
 }
 
-export function updateClientPost(post) {
+export function updateClientPost(postText, postId) {
   return {
     meta: {remote: false},
     type: 'UPDATE_CLIENT_POST',
-    post : post
+    postText : postText,
+    postId : postId
   };
 }
 
