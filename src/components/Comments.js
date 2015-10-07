@@ -10,29 +10,28 @@ import 'styles/components/Comments';
 export const Comments = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
-  //getInitialState: function() {
-  //  return {comment: null};
-  //},
-
-  enter : false,
-
+  /**
+   * Will fire off an addComment ( remote ) action when you click enter
+   */
   addComment(event){
     if (event.which === 13) {
       //var comment = this.state.comment; //event.target.value;
       let {addComment, clearClientComment} = this.props;
       addComment(event.target.value, parseInt(this.props.params.postId));
-      clearClientComment(event.target.value);
-      this.enter = true;
+      clearClientComment();
     }
   },
 
-  updateComment(event){
-    if (!this.enter) {
+  /**
+   * Will update the client comment on each change.
+   */
+  changeComment(event){
+    // the onChange event doesn't give us a which so we'll have to check the value ..
+    if(event.target.value != '\n') {
       let {updateClientComment} = this.props;
       //console.log('addAComment : ' + event.target.value);
       updateClientComment(event.target.value);
     }
-    this.enter = false;
   },
 
   render: function() {
@@ -55,7 +54,7 @@ export const Comments = React.createClass({
         <ul>
           {commentsMu}
         </ul>
-        <textarea rows='3' cols='60' placeholder='make your comment' onKeyDown={this.addComment} onChange={this.updateComment} value={clientComment}/>
+        <textarea rows='3' cols='60' placeholder='make your comment' onKeyDown={this.addComment} onChange={this.changeComment} value={clientComment}/>
         {this.props.children}
       </div>
     );

@@ -1,5 +1,6 @@
 import { Map} from 'immutable';
 
+// ---- State
 export function setState(state) {
   return {
     meta: {remote: false},
@@ -16,6 +17,16 @@ export function resetState(state) {
   };
 }
 
+// ---- Posts
+export function updatePost(postId, postText){
+  return {
+    meta: {remote: true},
+    type: 'UPDATE_POST_TEXT',
+    postId : postId,
+    postText : postText
+  };
+}
+
 export function selectPost(postId) {
   return {
     meta: {remote: false},
@@ -24,41 +35,11 @@ export function selectPost(postId) {
   };
 }
 
-export function addComment(comment, postId, userId = 1) {
-  return {
-    meta: {remote: true},
-    type: 'ADD_COMMENT',
-    comment : Map({body: comment, date: new Date(), post: postId, user: userId})
-  };
-}
-
 export function updateClientPost(post) {
   return {
     meta: {remote: false},
     type: 'UPDATE_CLIENT_POST',
     post : post
-  };
-}
-
-export function clearClientPost() {
-  return {
-    meta: {remote: false},
-    type: 'CLEAR_CLIENT_POST'
-  };
-}
-
-export function updateClientComment(comment) {
-  return {
-    meta: {remote: false},
-    type: 'UPDATE_CLIENT_COMMENT',
-    comment : comment
-  };
-}
-
-export function clearClientComment() {
-  return {
-    meta: {remote: false},
-    type: 'CLEAR_CLIENT_COMMENT'
   };
 }
 
@@ -77,12 +58,45 @@ export function setPostEdit(edit = true) {
   };
 }
 
-export function updatePost(postId, postText){
+export function clearClientPost() {
+  return {
+    meta: {remote: false},
+    type: 'CLEAR_CLIENT_POST'
+  };
+}
+
+
+// ---- Comments
+export function addComment(comment, postId, userId = 1) {
   return {
     meta: {remote: true},
-    type: 'UPDATE_POST_TEXT',
-    postId : postId,
-    postText : postText
+    type: 'ADD_COMMENT',
+    comment : Map({body: comment, date: new Date(), post: postId, user: userId})
+  };
+}
+
+export function updateClientComment(comment) {
+  return {
+    meta: {remote: false},
+    type: 'UPDATE_CLIENT_COMMENT',
+    comment : comment
+  };
+}
+
+export function clearClientComment() {
+  return {
+    meta: {remote: false},
+    type: 'CLEAR_CLIENT_COMMENT'
+  };
+}
+
+
+// ---- Users
+export function saveUser(user){
+  return {
+    meta: {remote: true},
+    type: 'UPDATE_USER',
+    user : user
   };
 }
 
@@ -105,13 +119,5 @@ export function clearViewUser(){
   return {
     meta: {remote: false},
     type: 'CLEAR_VIEW_USER'
-  };
-}
-
-export function saveUser(user){
-  return {
-    meta: {remote: true},
-    type: 'UPDATE_USER',
-    user : user
   };
 }
