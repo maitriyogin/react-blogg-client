@@ -23,7 +23,7 @@ export const User = React.createClass({
   saveUser(){
     let {saveUser,clearViewUser} = this.props;
     let user = this.props.user;
-    console.log('user to save --' + JSON.stringify(user, null, 2));
+    //console.log('user to save --' + JSON.stringify(user, null, 2));
     // remote action
     saveUser(user);
     // view action

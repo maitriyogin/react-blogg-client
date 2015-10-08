@@ -5,7 +5,7 @@ var path = require('path');
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
 var sassLoaders = [
-  "css-loader",
+  "css-loader?sourceMap",
   "autoprefixer-loader?browsers=last 2 version",
   "sass-loader?indentedSyntax=sass&includePaths[]=" + path.resolve(__dirname, "./src"),
 ];
@@ -13,7 +13,7 @@ var sassLoaders = [
 module.exports = {
   devtool: 'eval',
   entry: [
-    'webpack-dev-server/client?http://localhost:3000',
+    'webpack-dev-server/client?http://localhost:3001',
     'webpack/hot/only-dev-server',
     './src/index.js'
   ],
@@ -26,19 +26,20 @@ module.exports = {
     {
       test: /\.sass$/,
       loader: ExtractTextPlugin.extract("style-loader", sassLoaders.join("!")),
-    }],
+    }
+    ],
   },
   resolve: {
     extensions: ['', '.js', '.jsx', '.sass'],
     modulesDirectories: ['src', 'node_modules']
   },
   output: {
-    path: __dirname + '/dist',
-    publicPath: '/',
+    path: __dirname + '/build',
+    publicPath: '/build/',
     filename: 'bundle.js'
   },
   devServer: {
-    contentBase: './dist'
+    contentBase: './build'
     ,hot: true
   }
   ,plugins: [
