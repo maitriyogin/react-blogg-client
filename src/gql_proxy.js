@@ -1,6 +1,8 @@
 import fetch from 'isomorphic-fetch';
 
-const gqlserver = 'http://localhost:3010/graphql';
+var isProduction = process.env.NODE_ENV === 'production';
+
+const gqlserver = isProduction ? 'https://react-blogg-server.herokuapp.com/graphql' : 'http://localhost:3010/graphql';
 
 export function allPosts() {
   let postsQuery = '{posts{_id,title,}}';
