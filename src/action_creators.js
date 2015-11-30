@@ -1,6 +1,7 @@
 import { Map, fromJS} from 'immutable';
 require('es6-promise').polyfill();
 import fetch from 'isomorphic-fetch';
+import * as gqlProxy from 'gql_proxy'
 
 // ---- State
 export function setState(state) {
@@ -20,20 +21,43 @@ export function resetState(state) {
 }
 
 // ---- Posts
-export function updatePost(postId, postText) {
+export function setPosts(posts) {
   return {
-    meta: {remote: true},
-    type: 'UPDATE_POST_TEXT',
-    postId: postId,
-    postText: postText
+    meta: {remote: false},
+    type: 'SET_POSTS',
+    posts
   };
 }
 
-export function selectPost(postId) {
+export function setCurrentPost(post) {
   return {
     meta: {remote: false},
-    type: 'SELECT_POST',
-    postId: postId
+    type: 'SET_CURRENT_POST',
+    post: post
+  };
+}
+
+export function setComments(comments) {
+  return {
+    meta: {remote: false},
+    type: 'SET_COMMENTS',
+    comments: comments
+  };
+}
+
+export function addToComments(comment) {
+  return {
+    meta: {remote: false},
+    type: 'ADD_TO_COMMENTS',
+    comment: comment
+  };
+}
+
+export function setCurrentComment(comment) {
+  return {
+    meta: {remote: false},
+    type: 'SET_CURRENT_COMMENT',
+    comment: comment
   };
 }
 
@@ -71,36 +95,56 @@ export function clearClientPost() {
 // asynch
 export function getPosts() {
   return dispatch => {
-    return fetch('http://localhost:3000/api/posts')
-      .then(response=> {
-        console.log(response.headers.get('Content-Type'))
-        console.log(response.status)
-        console.log(response.statusText)
-        return response.json()
+    return gqlProxy.allPosts().then(response=> {
+        return response && response.data && response.data.posts ? response.data.posts : response;
       })
       // turn the json payload into an immutable
-      .then(json => dispatch(recievePosts(fromJS(json))))
+      .then(json => dispatch(setPosts(fromJS(json))))
   };
 }
 
-export function recievePosts(posts) {
-  return {
-    meta: {remote: false},
-    type: 'RECEIVE_POSTS',
-    posts
+export function getPost(id) {
+  return dispatch => {
+    return gqlProxy.getPost(id).then(response=> {
+        return response && response.data && response.data.posts ? response.data.posts : response;
+      })
+      // turn the json payload into an immutable
+      .then(json => {
+        if(json instanceof Array && json.length > 0){
+          json = json[0];
+        }
+        dispatch(setCurrentPost(fromJS(json)))
+      })
+  };
+}
+
+export function updatePost(post) {
+  return dispatch => {
+    return gqlProxy.updatePost(post).then(response=> {
+        return response && response.data && response.data.updatePost ? response.data.updatePost : response;
+      })
+      // turn the json payload into an immutable
+      .then(json => {
+        if(json instanceof Array && json.length > 0){
+          json = json[0];
+        }
+        dispatch(setCurrentPost(fromJS(json)))
+      })
+  };
+}
+
+export function getCommentsForPost(postid) {
+  return dispatch => {
+    return gqlProxy.getCommentsForPost(postid).then(response=> {
+        return response && response.data && response.data.comments ? response.data.comments : response;
+      })
+      // turn the json payload into an immutable
+      .then(json => dispatch(setComments(fromJS(json))))
   };
 }
 
 
 // ---- Comments
-export function addComment(comment, postId, userId = 1) {
-  return {
-    meta: {remote: true},
-    type: 'ADD_COMMENT',
-    comment: Map({body: comment, date: new Date(), post: postId, user: userId})
-  };
-}
-
 export function updateClientComment(comment) {
   return {
     meta: {remote: false},
@@ -116,8 +160,62 @@ export function clearClientComment() {
   };
 }
 
+// -- asynch
+export function addComment(comment, postId, userId = 1) {
+  return dispatch => {
+    return gqlProxy.addComment(comment, postId, userId).then(response=> {
+        return response && response.data && response.data.addComment ? response.data.addComment : response;
+      })
+      // turn the json payload into an immutable
+      .then(json => dispatch(addToComments(fromJS(json))))
+  };
+}
+
+
 
 // ---- Users
+// -- asynch
+export function getUsers() {
+  return dispatch => {
+    return gqlProxy.allUsers().then(response=> {
+        return response && response.data && response.data.users ? response.data.users : response;
+      })
+      // turn the json payload into an immutable
+      .then(json => dispatch(setUsers(fromJS(json))))
+  };
+}
+
+export function createUser(user) {
+  return dispatch => {
+    return gqlProxy.createUser(user).then(response=> {
+        return response && response.data && response.data.createUser ? response.data.createUser : response;
+      })
+      // turn the json payload into an immutable
+      .then(json => {
+        if(json instanceof Array && json.length > 0){
+          json = json[0];
+        }
+        dispatch(addToUsers(fromJS(json)))
+      })
+  };
+}
+
+export function addToUsers(user) {
+  return {
+    meta: {remote: false},
+    type: 'ADD_TO_USERS',
+    user: user
+  };
+}
+
+export function setUsers(users) {
+  return {
+    meta: {remote: false},
+    type: 'SET_USERS',
+    users: users
+  };
+}
+
 export function saveUser(user) {
   return {
     meta: {remote: true},

@@ -21,11 +21,11 @@ export const User = React.createClass({
 
   // --- actions
   saveUser(){
-    let {saveUser,clearViewUser} = this.props;
+    let {createUser,clearViewUser} = this.props;
     let user = this.props.user;
     //console.log('user to save --' + JSON.stringify(user, null, 2));
     // remote action
-    saveUser(user);
+    createUser(user);
     // view action
     clearViewUser();
     this.history.pushState(null, '/users' );

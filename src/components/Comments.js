@@ -10,6 +10,22 @@ import 'styles/components/Comments';
 export const Comments = React.createClass({
   mixins: [React.addons.PureRenderMixin],
 
+  componentWillMount() {
+    let {getCommentsForPost} = this.props;
+    let{postId} = this.props.params;
+    console.log('--- componentWillMount postId : ' + postId);
+    getCommentsForPost(postId);
+  },
+
+  componentWillReceiveProps(nextProps) {
+    let {getCommentsForPost} = this.props;
+    let oldPostId = this.props.params.postId;
+    let nextPostId = nextProps.params.postId;
+    if(oldPostId != nextPostId && nextPostId){
+      getCommentsForPost(nextPostId);
+    }
+  },
+
   /**
    * Will fire off an addComment ( remote ) action when you click enter
    */
@@ -45,7 +61,7 @@ export const Comments = React.createClass({
       commentsMu = comments.map((comment)=> {
         let id = comment.get('_id');
         let commentsLink = `comments/${id}`;
-        return <li key={comment.get('_id')}><span>{comment.get('body')}</span><span className='SECTION__Comments__Comment__date'>{moment(comment.get('date')).fromNow()}</span> </li>
+        return <li key={comment.get('_id')}><span>{comment.get('body')}</span><span className='SECTION__Comments__Comment__date'>{moment(comment.get('updatedate')).fromNow()}</span> </li>
       });
     }
     return (
@@ -65,7 +81,8 @@ function mapStateToProps(state) {
   //console.log('---- Comments : ' + JSON.stringify(state, null, 2));
   return {
     state: state.posts,
-    comments: utils.filterList(state.posts, 'comments', 'post', state.posts.get('currentPost')),
+    comments: state.posts.get('comments'),
+    currentPost: state.posts.get('currentPost'),
     clientComment : state.posts.get('clientComment')
   };
 }

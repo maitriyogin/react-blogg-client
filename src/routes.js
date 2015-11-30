@@ -13,8 +13,7 @@ import {UserContainer} from './components/User';
 export default (store) => {
   return (
     <Provider store={store}>
-      {() =>
-        <ReduxRouter>
+      <ReduxRouter>
           <Route path="/" component={App}>
             <IndexRoute component={PostsContainer} />
             <Route path="posts" component={PostsContainer} >
@@ -27,7 +26,6 @@ export default (store) => {
             </Route>
           </Route>
         </ReduxRouter>
-      }
     </Provider>)
 }
 

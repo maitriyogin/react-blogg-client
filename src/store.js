@@ -13,7 +13,7 @@ import createHistory from 'history/lib/createHashHistory';
 
 import {setState} from './action_creators';
 
-import remoteActionMiddleware from './remote_action_middleware';
+//import remoteActionMiddleware from './remote_action_middleware';
 import reducer from './reducer';
 import io from 'socket.io-client';
 import { devTools, persistState } from 'redux-devtools';
@@ -25,12 +25,12 @@ const url = location.hostname == 'localhost' ? localUrl : herokuUrl;
 console.log(`Websocket connection is using : ${url}`);
 
 // ---- websockets, start
-const socket = io(url);
+//const socket = io(url);
 
 const finalCreateStore = compose(
   applyMiddleware(  
-                    thunkMiddleware,
-    remoteActionMiddleware(socket)
+                    thunkMiddleware
+    //remoteActionMiddleware(socket)
   ),
   reduxReactRouter({
     createHistory

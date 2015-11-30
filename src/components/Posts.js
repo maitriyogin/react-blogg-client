@@ -50,6 +50,12 @@ export const Posts = React.createClass({
   }
 });
 
+Posts.propTypes = {
+  posts:React.PropTypes.array,
+  getPosts:React.PropTypes.func,
+  resetState:React.PropTypes.func,
+};
+
 function mapStateToProps(state) {
   console.log('---- 5. Posts state change ');
   return {

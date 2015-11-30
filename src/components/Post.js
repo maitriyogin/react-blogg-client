@@ -1,4 +1,5 @@
-import React from 'react/addons';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import { History } from 'react-router'
 import * as actionCreators from '../action_creators';
@@ -16,10 +17,10 @@ export const Post = React.createClass({
    * Called only once before rendering
    */
   componentWillMount: function() {
-    let {selectPost} = this.props;
+    let {getPost} = this.props;
     let{postId} = this.props.params;
     console.log('--- componentWillMount postId : ' + postId);
-    selectPost(postId);
+    getPost(postId);
   },
 
   /**
@@ -27,15 +28,13 @@ export const Post = React.createClass({
    * @param nextProps
    */
   componentWillReceiveProps: function(nextProps) {
-    let {selectPost} = nextProps;
-    let postId = nextProps.params.postId;
-    let currentPostId = this.props.params.postId;
+    let {getPost} = nextProps;
+    let oldPostId = this.props.params.postId;
+    let nextPostId = nextProps.params.postId;
     let post = this.props.post;
-    console.log('------ Post currentPostId :' + currentPostId + ', new postId ' + postId);
-    this.setState({postText:nextProps.post.get('body')});
-    if(currentPostId !== postId || post == null) {
-      console.log('--- Post componentWillReceiveProps postid' + postId);
-      selectPost(postId);
+    //this.setState({postText:nextProps.post.get('body')});
+    if(!oldPostId || (nextPostId !== oldPostId && nextPostId) ) {
+      getPost(nextPostId);
     }
 
     // ---- DONT BREAK THE WEB ...
@@ -78,11 +77,8 @@ export const Post = React.createClass({
   },
 
   savePost(){
-    let {updatePost} = this.props;
-    let postText = React.findDOMNode(this.refs.postTextArea);
-    let text = postText.value;
-    let postId = parseInt(this.props.params.postId);
-    updatePost(postId, text);
+    let {updatePost, post} = this.props;
+    updatePost(post);
   },
 
   postTextChange(event){
@@ -94,9 +90,10 @@ export const Post = React.createClass({
   // --- render!
   render: function() {
     // get the post
-    let {post,edit}= this.props;
+    let {post,edit} = this.props;
     let postMu = <li>No Post!</li>;
-    if(post != null) {
+    console.log('post: ' + JSON.stringify(post, null));
+    if(post) {
       let postText = post.get('body');
       //console.log('------ Post render postid :' + post.get('_id')  + ', text:' + this.state.postText);
       postMu =
@@ -132,7 +129,7 @@ export const Post = React.createClass({
 function mapStateToProps(state) {
   //console.log('---------- Post : new state' + JSON.stringify(state.posts, null, 2));
   return {
-    post : utils.getItem(state.posts, 'posts', state.posts.get('currentPost')),
+    post : state.posts.get('currentPost'),
     edit : state.posts.get('postEdit')
   };
 }

@@ -36,6 +36,15 @@ export default function(state = Map({users:null}), action = {type:null}) {
       state = state.merge({users: action.state.users});
       //console.log('---- 4. Users setState :' + JSON.stringify(state, null, 2));
     return state;
+    case 'SET_USERS':
+      state = state.set('users', action.users);
+      return state;
+    case 'ADD_TO_USERS':
+      let users = state.get('users');
+      if(users && action.user){
+        state = state.set('users', users.push(action.user));
+      }
+      return state;
     case 'CLEAR_VIEW_USER':
       state = state.delete('newUser');
       return state;

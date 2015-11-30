@@ -6,6 +6,11 @@ import * as actionCreators from '../action_creators';
 export const Users = React.createClass({
   mixins: [React.addons.PureRenderMixin, History],
 
+  componentWillMount() {
+    let {getUsers} = this.props;
+    getUsers();
+  },
+
   newUser(){
     let {newUser, location} = this.props;
     newUser();
@@ -14,7 +19,7 @@ export const Users = React.createClass({
 
   render: function() {
     let users = <li>No Users!</li>;
-    if(this.props.users != null) {
+    if(this.props.users) {
       users = this.props.users.map((user)=> {
         return <li key={user.get('_id')}>{user.get('username')}, {user.get('email')}</li>
       });
@@ -37,7 +42,7 @@ export const Users = React.createClass({
 function mapStateToProps(state) {
   console.log('---- 5. Users state change ');
   return {
-    users: state.users.get('users')
+    users: state.users != null ? state.users.get('users') : null
   };
 }
 

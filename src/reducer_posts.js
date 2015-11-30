@@ -7,9 +7,21 @@
 import {utils} from './utils';
 import {List, Map} from 'immutable';
 
-function selectPost(state,postId){
-  console.log('selectPost id:' + postId);
-  state = state.set('currentPost', postId);
+function setCurrentPost(state,post){
+  console.log('setCurrentPost :' + JSON.stringify(post));
+  state = state.set('currentPost', post);
+  return state;
+}
+
+function setComments(state,comments){
+  console.log('setCurrentComment :' + JSON.stringify(comments));
+  state = state.set('comments', comments);
+  return state;
+}
+
+function setCurrentComment(state,comment){
+  console.log('setCurrentComment :' + JSON.stringify(comment));
+  state = state.set('currentComment', comment);
   return state;
 }
 
@@ -36,11 +48,8 @@ export default function(state = Map({posts:null, comments:null}), action = {type
       //console.log('---- 3. Posts setState :' + JSON.stringify(state, null, 2));
       //console.log('*** posts set state' + JSON.stringify(state, null, 2));
       return state;
-    case 'SELECT_POST':
-      state = selectPost(state, action.postId);
-      return state;
     case 'UPDATE_CLIENT_POST':
-      state = updateClientPost(state, action.postText, action.postId);
+      state = state.setIn(['currentPost', 'body'], action.postText);
       return state;
     case 'CLEAR_CLIENT_POST':
       state = state.delete('clientPost');
@@ -60,7 +69,26 @@ export default function(state = Map({posts:null, comments:null}), action = {type
       state = state.delete('clientComment');
       return state;
       //console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
-    case 'RECEIVE_POSTS':
+    case 'SET_POSTS':
+      state = state.set('posts', action.posts);
+      //console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
+      return state;
+    case 'SET_CURRENT_POST':
+      state = state.set('currentPost', action.post);
+      return state;
+    case 'SET_COMMENTS':
+      state = state.set('comments', action.comments);
+      return state;
+    case 'ADD_TO_COMMENTS':
+      let comments = state.get('comments');
+      if(comments && action.comment){
+        state = state.set('comments', comments.push(action.comment));
+      }
+      return state;
+    case 'SET_CURRENT_COMMENT':
+      state = state.set('currentComment', action.comment);
+      return state;
+    case 'GET_POSTS':
       state = state.set('posts', action.posts);
       //console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
       return state;
