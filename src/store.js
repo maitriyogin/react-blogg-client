@@ -6,13 +6,17 @@
  3. root reducer may combine the output of multiple reducers into a single state tree
  4. the redux store saves the complete state tree returned  by the root reducer
  */
-import {createStore, applyMiddleware} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
+import thunkMiddleware from 'redux-thunk';
+import {reduxReactRouter} from 'redux-router';
+import createHistory from 'history/lib/createHashHistory';
 
 import {setState} from './action_creators';
 
 import remoteActionMiddleware from './remote_action_middleware';
 import reducer from './reducer';
 import io from 'socket.io-client';
+import { devTools, persistState } from 'redux-devtools';
 
 const herokuUrl = 'https://mighty-stream-4777.herokuapp.com';
 const localUrl = `${location.protocol}//${location.hostname}:8090`;
@@ -23,18 +27,26 @@ console.log(`Websocket connection is using : ${url}`);
 // ---- websockets, start
 const socket = io(url);
 
-// ---- apply middleware to store
-const createStoreWithMiddleware = applyMiddleware(
-  remoteActionMiddleware(socket)
+const finalCreateStore = compose(
+  applyMiddleware(  
+                    thunkMiddleware,
+    remoteActionMiddleware(socket)
+  ),
+  reduxReactRouter({
+    createHistory
+  }),
+ 
+  devTools(),
+  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
 )(createStore);
 
-// export the store
-export const store = createStoreWithMiddleware(reducer);
+export const store = finalCreateStore(reducer);
 
-socket.on('state', state => {
-    console.log('---- 1. recieve state');
 
-    console.log('---- 2. dispatch setState Action');
-    store.dispatch(setState(state))
-  }
-)
+//socket.on('state', state => {
+//    console.log('---- 1. recieve state');
+//
+//    console.log('---- 2. dispatch setState Action');
+//    store.dispatch(setState(state))
+//  }
+//)

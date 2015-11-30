@@ -2,6 +2,7 @@ import React from 'react';
 import { Router, Route, IndexRoute } from 'react-router';
 import {Provider} from 'react-redux';
 
+import { ReduxRouter } from 'redux-router';
 import App from './components/App';
 import {PostsContainer} from './components/Posts';
 import {PostContainer} from './components/Post';
@@ -13,7 +14,7 @@ export default (store) => {
   return (
     <Provider store={store}>
       {() =>
-        <Router>
+        <ReduxRouter>
           <Route path="/" component={App}>
             <IndexRoute component={PostsContainer} />
             <Route path="posts" component={PostsContainer} >
@@ -25,7 +26,7 @@ export default (store) => {
               <Route path="new" component={UserContainer} />
             </Route>
           </Route>
-        </Router>
+        </ReduxRouter>
       }
     </Provider>)
 }

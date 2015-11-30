@@ -58,8 +58,13 @@ export default function(state = Map({posts:null, comments:null}), action = {type
       return state;
     case 'CLEAR_CLIENT_COMMENT':
       state = state.delete('clientComment');
+      return state;
+      //console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
+    case 'RECEIVE_POSTS':
+      state = state.set('posts', action.posts);
       //console.log('---- clear client comment :' + JSON.stringify(state, null, 2));
       return state;
+    return state;
     default :
       return state;
   }

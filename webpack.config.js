@@ -26,7 +26,8 @@ module.exports = {
     {
       test: /\.sass$/,
       loader: ExtractTextPlugin.extract("style-loader", sassLoaders.join("!")),
-    }
+    },
+    { test: /\.woff$/, loader: "url-loader?limit=100000" }
     ],
   },
   resolve: {

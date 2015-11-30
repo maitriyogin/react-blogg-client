@@ -11,10 +11,6 @@ import 'styles/components/Post';
 export const Post = React.createClass({
   mixins: [React.addons.PureRenderMixin, History],
 
-  getInitialState: function() {
-    return {postText: null};
-  },
-
   // --- lifecycle
   /**
    * Called only once before rendering
