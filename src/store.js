@@ -16,7 +16,6 @@ import {setState} from './action_creators';
 //import remoteActionMiddleware from './remote_action_middleware';
 import reducer from './reducer';
 import io from 'socket.io-client';
-import { devTools, persistState } from 'redux-devtools';
 
 const herokuUrl = 'https://mighty-stream-4777.herokuapp.com';
 const localUrl = `${location.protocol}//${location.hostname}:8090`;
@@ -26,19 +25,31 @@ console.log(`Websocket connection is using : ${url}`);
 
 // ---- websockets, start
 //const socket = io(url);
-
-const finalCreateStore = compose(
-  applyMiddleware(  
-                    thunkMiddleware
-    //remoteActionMiddleware(socket)
-  ),
-  reduxReactRouter({
-    createHistory
-  }),
- 
-  devTools(),
-  persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
-)(createStore);
+let finalCreateStore;
+if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
+  const { persistState } = require('redux-devtools');
+  const DevTools = require('./containers/DevTools');
+  finalCreateStore = compose(
+    applyMiddleware(
+      thunkMiddleware
+      //remoteActionMiddleware(socket)
+    ),
+    reduxReactRouter({
+      createHistory
+    }),
+    window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument(),
+    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+  )(createStore);
+} else {
+  finalCreateStore = compose(
+    applyMiddleware(
+      thunkMiddleware
+    ),
+    reduxReactRouter({
+      createHistory
+    })
+  )(createStore);
+}
 
 export const store = finalCreateStore(reducer);
 

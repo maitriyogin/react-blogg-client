@@ -55,12 +55,31 @@ module.exports = {
         test: /\.sass$/,
         loader: ExtractTextPlugin.extract("style-loader", sassLoaders.join("!")),
       },
-      {test: /\.png/, loader: 'url?limit=100000&mimeetype=image/png' }
+      {test: /\.png/, loader: 'url?limit=100000&mimeetype=image/png' },
+      {test: /\.(js|jsx)$/, loader: 'webpack-strip?strip[]=debug,strip[]=console.log', exclude: /(node_modules|vendor)/ }
     ]
   },
 
   plugins: [
-    new ExtractTextPlugin("bundle.css")
+    new ExtractTextPlugin("bundle.css"),
+    new webpack.DefinePlugin({
+      __CLIENT__: true,
+      __SERVER__: false,
+      __DEVELOPMENT__: false,
+      __DEVTOOLS__: false
+    }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': JSON.stringify('production'),
+      }
+    }),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    })
   ]
 
 };

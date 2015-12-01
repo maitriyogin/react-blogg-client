@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import {connect} from 'react-redux';
 import * as actionCreators from '../action_creators';
 import {PostContainer} from './Post';
@@ -51,7 +51,7 @@ export const Posts = React.createClass({
 });
 
 Posts.propTypes = {
-  posts:React.PropTypes.array,
+  posts:React.PropTypes.object, // this is immutable ... but is an array ..
   getPosts:React.PropTypes.func,
   resetState:React.PropTypes.func,
 };

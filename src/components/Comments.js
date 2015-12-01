@@ -1,4 +1,4 @@
-import React from 'react/addons';
+import React from 'react';
 import {connect} from 'react-redux';
 import moment from 'moment';
 import * as actionCreators from '../action_creators';

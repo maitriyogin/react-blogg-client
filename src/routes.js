@@ -11,8 +11,13 @@ import {UsersContainer} from './components/Users';
 import {UserContainer} from './components/User';
 
 export default (store) => {
+  let DevTools;
+  if (__DEVTOOLS__ && !window.devToolsExtension) {
+    DevTools = require('./containers/DevTools');
+  }
   return (
     <Provider store={store}>
+      <div>
       <ReduxRouter>
           <Route path="/" component={App}>
             <IndexRoute component={PostsContainer} />
@@ -26,6 +31,8 @@ export default (store) => {
             </Route>
           </Route>
         </ReduxRouter>
+      {DevTools &&  <DevTools />}
+        </div>
     </Provider>)
 }
 

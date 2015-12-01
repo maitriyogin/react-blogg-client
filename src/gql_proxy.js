@@ -4,8 +4,12 @@ var isProduction = process.env.NODE_ENV === 'production';
 
 console.log('isProduction:' + isProduction + ', process.env.NODE_ENV:' + process.env.NODE_ENV );
 
-//const gqlserver = 'http://localhost:3010/graphql';
-const gqlserver = 'https://react-blogg-server.herokuapp.com/graphql';
+let gqlserver = 'https://react-blogg-server.herokuapp.com/graphql';
+// this is like a def, gets stripped in the build
+if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
+  gqlserver = 'http://localhost:3010/graphql';
+}
+
 
 export function allPosts() {
   let postsQuery = '{posts{_id,title,}}';
