@@ -6,7 +6,6 @@ import 'styles/base';
 
 export default React.createClass({
   render() {
-    console.log('--- store:' + JSON.stringify(store, null, 2));
     return (
       <div>
         <Navbar/>

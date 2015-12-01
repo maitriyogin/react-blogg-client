@@ -92,7 +92,6 @@ export const Post = React.createClass({
     // get the post
     let {post,edit} = this.props;
     let postMu = <li>No Post!</li>;
-    console.log('post: ' + JSON.stringify(post, null));
     if(post) {
       let postText = post.get('body');
       //console.log('------ Post render postid :' + post.get('_id')  + ', text:' + this.state.postText);

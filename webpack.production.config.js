@@ -56,7 +56,7 @@ module.exports = {
         loader: ExtractTextPlugin.extract("style-loader", sassLoaders.join("!")),
       },
       {test: /\.png/, loader: 'url?limit=100000&mimeetype=image/png' },
-      {test: /\.(js|jsx)$/, loader: 'webpack-strip?strip[]=debug,strip[]=console.log', exclude: /(node_modules|vendor)/ }
+      {test: /\.js$/, loader: 'webpack-strip?strip[]=debug,strip[]=console.log', exclude: /node_modules/ }
     ]
   },
 
