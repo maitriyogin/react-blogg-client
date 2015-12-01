@@ -2,6 +2,8 @@ import fetch from 'isomorphic-fetch';
 
 var isProduction = process.env.NODE_ENV === 'production';
 
+console.log('isProduction:' + isProduction + ', process.env.NODE_ENV:' + process.env.NODE_ENV );
+
 //const gqlserver = 'http://localhost:3010/graphql';
 const gqlserver = 'https://react-blogg-server.herokuapp.com/graphql';
 
