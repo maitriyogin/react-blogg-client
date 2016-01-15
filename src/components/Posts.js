@@ -14,11 +14,6 @@ export const Posts = React.createClass({
     getPosts();
   },
 
-  componentWillReceiveProps: function(nextProps) {
-    //let {getPosts} = this.props;
-    //getPosts();
-  },
-
   resetServerState(){
     let {resetState} = this.props;
     resetState();

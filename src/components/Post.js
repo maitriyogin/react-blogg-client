@@ -19,7 +19,6 @@ export const Post = React.createClass({
   componentWillMount: function() {
     let {getPost} = this.props;
     let{postId} = this.props.params;
-    console.log('--- componentWillMount postId : ' + postId);
     getPost(postId);
   },
 
@@ -32,7 +31,6 @@ export const Post = React.createClass({
     let oldPostId = this.props.params.postId;
     let nextPostId = nextProps.params.postId;
     let post = this.props.post;
-    //this.setState({postText:nextProps.post.get('body')});
     if(!oldPostId || (nextPostId !== oldPostId && nextPostId) ) {
       getPost(nextPostId);
     }
@@ -124,6 +122,14 @@ export const Post = React.createClass({
       </div>);
   }
 });
+
+Post.propTypes = {
+  post:React.PropTypes.object, // this is immutable ... but is an array ..
+  getPost:React.PropTypes.func,
+  toggleEdit:React.PropTypes.func,
+  updatePost:React.PropTypes.func,
+  updateClientPost:React.PropTypes.func
+};
 
 function mapStateToProps(state) {
   //console.log('---------- Post : new state' + JSON.stringify(state.posts, null, 2));
