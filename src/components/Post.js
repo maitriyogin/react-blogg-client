@@ -7,7 +7,7 @@ import {utils} from '../utils';
 import showdown from 'showdown';
 const converter = new showdown.Converter();
 
-import 'styles/components/Post';
+import '../styles/components/Post.scss';
 
 export const Post = React.createClass({
   mixins: [React.addons.PureRenderMixin, History],

@@ -16,6 +16,7 @@ export function allPosts() {
   return query(postsQuery);
 }
 
+// defined query
 export function getPost(id) {
   let postsQuery = `{posts(_id:${id}){_id,title,body}}`;
   return query(postsQuery);
@@ -31,6 +32,7 @@ export function addComment(comment, postfk, userfk) {
   return query(addCommentQuery);
 }
 
+// mutation to update a post
 export function updatePost(post) {
   let jsPost = post.toJS();
   let addCommentQuery = `mutation { updatePost(_id:${jsPost._id},body:"${jsPost.body}"){_id,title,body,userfk}}`;
@@ -48,7 +50,9 @@ export function createUser(user) {
   return query(createUserQuery);
 }
 
+// general query function, using fetch and returning a promise
 export function query(query) {
+  console.log(JSON.stringify(gqlserver));
   return fetch(gqlserver, {
     method: 'post',
     headers: { 'Content-Type':'application/graphql' },
@@ -57,5 +61,6 @@ export function query(query) {
     return result.json();
   })
 }
+
 
 //curl -XPOST -H 'Content-Type:application/json'  -d '{posts{title}}' http://localhost:3010/gql

@@ -8,12 +8,18 @@
  */
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import {reduxReactRouter} from 'redux-router';
-import createHistory from 'history/lib/createHashHistory';
+
+import { hashHistory } from 'react-router';
+import { syncHistory } from 'react-router-redux';
 
 import {setState} from './action_creators';
 
 //import remoteActionMiddleware from './remote_action_middleware';
+import logActionMiddleware from './log_action_middleware';
+import createSagaMiddleware from 'redux-saga'
+
+import {postsSagas} from './sagas/saga_posts'
+
 import reducer from './reducer';
 import io from 'socket.io-client';
 
@@ -21,33 +27,32 @@ const herokuUrl = 'https://mighty-stream-4777.herokuapp.com';
 const localUrl = `${location.protocol}//${location.hostname}:8090`;
 const url = location.hostname == 'localhost' ? localUrl : herokuUrl;
 
-console.log(`Websocket connection is using : ${url}`);
+const sagaMiddleware = createSagaMiddleware(postsSagas);
+
+const reduxRouterMiddleware = syncHistory(hashHistory);
+
+//console.log(`Websocket connection is using : ${url}`);
 
 // ---- websockets, start
 //const socket = io(url);
 let finalCreateStore;
 if (__DEVELOPMENT__ && __CLIENT__ && __DEVTOOLS__) {
   const { persistState } = require('redux-devtools');
-  const DevTools = require('./containers/DevTools');
+  const DevTools = require('./containers/DevTools').default;
+  console.log('-- store ' + DevTools.instrument());
   finalCreateStore = compose(
     applyMiddleware(
-      thunkMiddleware
-      //remoteActionMiddleware(socket)
+      thunkMiddleware,
+      reduxRouterMiddleware
     ),
-    reduxReactRouter({
-      createHistory
-    }),
-    window.devToolsExtension ? window.devToolsExtension() : DevTools.instrument(),
-    persistState(window.location.href.match(/[?&]debug_session=([^&]+)\b/))
+    DevTools.instrument()
   )(createStore);
 } else {
   finalCreateStore = compose(
     applyMiddleware(
-      thunkMiddleware
-    ),
-    reduxReactRouter({
-      createHistory
-    })
+      thunkMiddleware,
+      reduxRouterMiddleware
+    )
   )(createStore);
 }
 

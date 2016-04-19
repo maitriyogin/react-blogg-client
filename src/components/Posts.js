@@ -4,7 +4,7 @@ import * as actionCreators from '../action_creators';
 import {PostContainer} from './Post';
 import { Link } from 'react-router';
 
-import 'styles/components/Posts';
+import '../styles/components/Posts.scss';
 
 export const Posts = React.createClass({
   mixins: [React.addons.PureRenderMixin],

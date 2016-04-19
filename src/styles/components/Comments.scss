@@ -1,0 +1,11 @@
+@import "../section.scss";
+@import "../config/colors.scss";
+
+.SECTION__Comments {
+}
+
+.SECTION__Comments__Comment__date {
+  font-size: smaller;
+  color: $navActive;
+  float: right;
+}

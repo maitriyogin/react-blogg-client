@@ -1,0 +1,21 @@
+@import "../lists.scss";
+
+.SECTION__Navbar li {
+  float: left;
+}
+
+.SECTION__Navbar a:link, a:visited {
+      display: block;
+      width: 120px;
+      color: #FFFFFF;
+      background-color: #94988c;
+      text-align: center;
+      padding: 4px;
+      text-decoration: none;
+      text-transform: uppercase;
+}
+
+.SECTION__Navbar a:hover, a:active {
+  background-color: #738698;
+}
+

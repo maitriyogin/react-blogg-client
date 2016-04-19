@@ -21,11 +21,27 @@ export function resetState(state) {
 }
 
 // ---- Posts
+// saga
+export function fetchPosts() {
+  return {
+    meta: {remote: false},
+    type: 'POSTS_FETCH_REQUESTED',
+  };
+}
+
 export function setPosts(posts) {
   return {
     meta: {remote: false},
     type: 'SET_POSTS',
     posts
+  };
+}
+
+export function postsFetchFailure(message) {
+  return {
+    meta: {remote: false},
+    type: 'POSTS_FETCH_FAILURE',
+    message
   };
 }
 

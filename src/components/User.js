@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { History } from 'react-router'
 import * as actionCreators from '../action_creators';
-import {utils} from '../utils';
 
 export const User = React.createClass({
   mixins: [React.addons.PureRenderMixin, History],
@@ -16,8 +15,6 @@ export const User = React.createClass({
       newUser();
     }
   },
-
-  // --- utils
 
   // --- actions
   saveUser(){

@@ -5,7 +5,7 @@ import * as actionCreators from '../action_creators';
 import { Link } from 'react-router';
 import {utils} from '../utils';
 
-import 'styles/components/Comments';
+import '../styles/components/Comments.scss';
 
 export const Comments = React.createClass({
   mixins: [React.addons.PureRenderMixin],

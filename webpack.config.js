@@ -4,15 +4,10 @@ var path = require('path');
 
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-var sassLoaders = [
-  "css-loader?sourceMap",
-  "autoprefixer-loader?browsers=last 2 version",
-  "sass-loader?indentedSyntax=sass&includePaths[]=" + path.resolve(__dirname, "./src"),
-];
-
 module.exports = {
-  devtool: 'eval',
+  devtool: 'cheap-module-eval-source-map',
   entry: [
+    'babel-polyfill',
     'webpack-dev-server/client?http://localhost:3001',
     'webpack/hot/only-dev-server',
     './src/index.js'
@@ -21,17 +16,23 @@ module.exports = {
     loaders: [{
       test: /\.js?$/,
       exclude: /node_modules/,
-      loader: 'react-hot!babel?stage=1'
+      loader: 'react-hot!babel'
     },
-    {
-      test: /\.sass$/,
-      loader: ExtractTextPlugin.extract("style-loader", sassLoaders.join("!")),
-    },
-    { test: /\.woff$/, loader: "url-loader?limit=100000" }
+      {
+        test: /\.scss$/,
+        loaders: ["style", "css", "autoprefixer", "sass"]
+      },
+
+      {
+        test: /\.css$/,
+        loaders: ["style", "css"]
+      },
+
+      {test: /\.woff$/, loader: "url-loader?limit=100000"}
     ],
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.sass'],
+    extensions: ['', '.js', '.jsx', '.scss'],
     modulesDirectories: ['src', 'node_modules']
   },
   output: {
@@ -41,9 +42,14 @@ module.exports = {
   },
   devServer: {
     contentBase: './build'
-    ,hot: true
-  }
-  ,plugins: [
+    , hot: true
+  },
+  sasslint: {
+    configFile: '.sass-lint.yml',
+    emitWarning: false,
+    failOnError: true,
+  },
+  plugins: [
     new ExtractTextPlugin("bundle.css"),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.DefinePlugin({
@@ -52,5 +58,5 @@ module.exports = {
       __DEVELOPMENT__: true,
       __DEVTOOLS__: true  // <-------- DISABLE redux-devtools HERE
     }),
-]
+  ]
 };

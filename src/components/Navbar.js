@@ -3,7 +3,7 @@
  */
 import React from 'react/addons';
 import { Link } from 'react-router';
-import 'styles/components/Navbar';
+import '../styles/components/Navbar.scss';
 
 export const Navbar = React.createClass({
   mixins: [React.addons.PureRenderMixin],
